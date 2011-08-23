@@ -16,13 +16,14 @@ class Pngqr
         @fg_color = opthash.delete(:fg_color)
       end
       @scale ||= 1
-      @border ||= 0
+      #@border ||= 0
       @bg_color ||= 'FFFFFF' #White
       @fg_color ||= '000000' #Black
       
       qr = nil
       if(opthash[:size]) # user supplied size
         qr = RQRCode::QRCode.new(*(opts + [opthash]))
+        #@border ||= ((qr.modules.length ** 2) * 0.25).ceil
       else
         # autosize algorithm: start at size=1 and increment until it worked
         opthash[:size] = 1
@@ -35,6 +36,7 @@ class Pngqr
           end
         end
       end
+      @border ||= ((qr.modules.length ** 2) * 0.25).ceil
       len = qr.module_count
       png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, ChunkyPNG::Color.from_hex(@bg_color))
       
