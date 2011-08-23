@@ -17,8 +17,8 @@ class Pngqr
       end
       @scale ||= 1
       #@border ||= 0
-      @bg_color ||= 'FFFFFF' #White
-      @fg_color ||= '000000' #Black
+      @bg_color ||= ChunkyPNG::Color::WHITE
+      @fg_color ||= ChunkyPNG::Color::BLACK
       
       qr = nil
       if(opthash[:size]) # user supplied size
@@ -38,12 +38,12 @@ class Pngqr
       end
       @border ||= ((qr.modules.length ** 2) * 0.25).ceil / 2
       len = qr.module_count
-      png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, ChunkyPNG::Color.from_hex(@bg_color))
+      png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, @bg_color)
       
       for_each_pixel(len) do |x,y|
         if qr.modules[y][x]
           for_each_scale(x, y, @scale) do |scaled_x, scaled_y|
-            png[scaled_x + @border, scaled_y + @border] = ChunkyPNG::Color.from_hex(@fg_color)
+            png[scaled_x + @border, scaled_y + @border] = @fg_color
           end
         end
       end
