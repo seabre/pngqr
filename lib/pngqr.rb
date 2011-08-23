@@ -36,7 +36,7 @@ class Pngqr
           end
         end
       end
-      @border ||= ((qr.modules.length ** 2) * 0.25).ceil
+      @border ||= ((qr.modules.length ** 2) * 0.25).ceil / 2
       len = qr.module_count
       png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, ChunkyPNG::Color.from_hex(@bg_color))
       
