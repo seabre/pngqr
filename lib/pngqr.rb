@@ -36,9 +36,11 @@ class Pngqr
           end
         end
       end
-      @border ||= ((qr.modules.length ** 2) * 0.25).ceil / 2
+      @border ||= 4
       len = qr.module_count
-      png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, @bg_color)
+      #Don't need to calculate this more than once.
+      img_size = len * @scale + @border # * 2
+      png = ChunkyPNG::Image.new(img_size, img_size, @bg_color)
       
       for_each_pixel(len) do |x,y|
         if qr.modules[y][x]
@@ -49,9 +51,9 @@ class Pngqr
       end
       
       if @filename
-        File.open(@filename, 'wb') {|io| io << png.to_blob(:fast_rgb) }
+        File.open(@filename, 'wb') {|io| io << png.to_blob(:fast_rgba) }
       else
-        png.to_blob(:fast_rgb)
+        png.to_blob(:fast_rgba)
       end
     end
   
