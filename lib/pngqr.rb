@@ -12,10 +12,14 @@ class Pngqr
         @filename = opthash.delete(:file) 
         @scale = opthash.delete(:scale)
         @border = opthash.delete(:border)
+        @bg_color = opthash.delete(:bg_color)
+        @fg_color = opthash.delete(:fg_color)
       end
       @scale ||= 1
       @border ||= 0
-
+      @bg_color ||= 'FFFFFF' #White
+      @fg_color ||= '000000' #Black
+      
       qr = nil
       if(opthash[:size]) # user supplied size
         qr = RQRCode::QRCode.new(*(opts + [opthash]))
@@ -32,12 +36,12 @@ class Pngqr
         end
       end
       len = qr.module_count
-      png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, ChunkyPNG::Color::WHITE)
+      png = ChunkyPNG::Image.new(len*@scale + 2*@border, len*@scale + 2*@border, ChunkyPNG::Color.from_hex(@bg_color))
       
       for_each_pixel(len) do |x,y|
         if qr.modules[y][x]
           for_each_scale(x, y, @scale) do |scaled_x, scaled_y|
-            png[scaled_x + @border, scaled_y + @border] = ChunkyPNG::Color::BLACK
+            png[scaled_x + @border, scaled_y + @border] = ChunkyPNG::Color.from_hex(@fg_color)
           end
         end
       end
