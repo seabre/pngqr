@@ -16,16 +16,16 @@ class TestPngqr < Test::Unit::TestCase
     assert_encoded_equals_decoded('y'*100, :size => 20)
     assert_encoded_equals_decoded('y'*1000, :size => 40)
   end
-  
+
   def test_scale
     assert_encoded_equals_decoded('hello, world', :scale => 5)
   end
-  
+
   def test_border
     assert_encoded_equals_decoded('hello, world', :border => 5)
   end
 
-  
+
   protected
   def assert_encoded_equals_decoded(*opts)
     begin
@@ -38,6 +38,6 @@ class TestPngqr < Test::Unit::TestCase
       @tempfile.unlink if @tempfile
     end
   end
-    
+
 end
 
